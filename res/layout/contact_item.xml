@@ -1,0 +1,138 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/sort_key_layout"
+        android:layout_width="fill_parent"
+        android:layout_height="18dip"
+        android:background="#303030" >
+
+        <TextView
+            android:id="@+id/sort_key"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dip"
+            android:textColor="#ffffff"
+            android:textSize="13sp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/name_layout"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+		
+        <ImageView
+            android:id="@+id/contact_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dip"
+            android:layout_marginRight="10dip"
+            android:src="@drawable/icon" />
+        
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/contact_image"
+            android:layout_toRightOf="@id/contact_image"
+            android:textColor="#ffffff"
+            android:textSize="22sp" />
+		<RelativeLayout
+		    android:id="@+id/show_hide_button"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:layout_centerInParent="true">
+
+		        <com.example.contactsdemo.view.InOutRelativeLayout
+		            android:id="@+id/composer_buttons_wrapper"
+		            android:layout_width="fill_parent"
+		            android:layout_height="fill_parent"
+  		 			android:layout_alignParentTop="true"
+		 			android:layout_centerHorizontal="true"
+		            android:clipChildren="false"
+		            android:clipToPadding="false"
+		            android:descendantFocusability="blocksDescendants" >
+		
+		            <com.example.contactsdemo.view.InOutImageButton
+		                android:id="@+id/composer_button_photo"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_alignParentLeft="true"
+		                android:layout_centerVertical="true"
+		                android:background="@drawable/composer_camera"
+		                android:visibility="gone" />
+		
+		            <com.example.contactsdemo.view.InOutImageButton
+		                android:id="@+id/composer_button_people"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_centerVertical="true"
+		                android:layout_toRightOf="@id/composer_button_photo"
+		                android:background="@drawable/composer_with"
+		                android:visibility="gone" />
+		
+		            <com.example.contactsdemo.view.InOutImageButton
+		                android:id="@+id/composer_button_place"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+           				android:layout_centerVertical="true"
+           				android:layout_toRightOf="@id/composer_button_people"
+		                android:background="@drawable/composer_place"
+		                android:visibility="gone" />
+		
+		            <com.example.contactsdemo.view.InOutImageButton
+		                android:id="@+id/composer_button_music"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_centerVertical="true"
+		                android:layout_toRightOf="@id/composer_button_place"
+		                android:background="@drawable/composer_music"
+		                android:visibility="gone" />
+		
+		            <com.example.contactsdemo.view.InOutImageButton
+		                android:id="@+id/composer_button_thought"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_centerVertical="true"
+		                android:layout_toRightOf="@id/composer_button_music"
+		                android:background="@drawable/composer_thought"
+		                android:visibility="gone" />
+		
+		            <com.example.contactsdemo.view.InOutImageButton
+		                android:id="@+id/composer_button_sleep"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_centerVertical="true"
+		                android:layout_toRightOf="@id/composer_button_thought"
+		                android:background="@drawable/composer_sleep"
+		                android:visibility="gone" />
+		        </com.example.contactsdemo.view.InOutRelativeLayout>
+	   	 	
+		   	 	<com.example.contactsdemo.view.InOutRelativeLayout
+		            android:id="@+id/composer_buttons_show_hide_button"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		 			android:layout_alignParentTop="true"
+		 			android:layout_centerHorizontal="true"
+		 			android:visibility="gone"
+		            android:background="@drawable/composer_button_center"
+		            >
+		
+		            <ImageView
+		                android:id="@+id/composer_buttons_show_hide_button_icon"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+						android:layout_centerInParent="true"
+		                android:visibility="gone"
+		                android:src="@drawable/composer_icn_plus"
+		                />
+		        </com.example.contactsdemo.view.InOutRelativeLayout>
+   	 	</RelativeLayout>
+	</RelativeLayout>
+
+</LinearLayout>
