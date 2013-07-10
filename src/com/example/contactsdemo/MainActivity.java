@@ -2,12 +2,7 @@ package com.example.contactsdemo;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.example.contactsdemo.view.animation.*;
-import com.example.contactsdemo.view.InOutImageButton;
-
-
-
 import android.app.Activity;
 import android.database.Cursor;
 import android.net.Uri;
@@ -33,7 +28,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-//import com.example.contactsdemo.ContactAdapter;
 
 public class MainActivity extends Activity {
 
@@ -116,7 +110,6 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		adapter = new ContactAdapter(this, R.layout.contact_item, contacts);
-		Log.d("getView","adapter="+adapter);
 		titleLayout = (LinearLayout) findViewById(R.id.title_layout);
 		sectionToastLayout = (RelativeLayout) findViewById(R.id.section_toast_layout); 
 		title = (TextView) findViewById(R.id.title);
@@ -125,12 +118,7 @@ public class MainActivity extends Activity {
 		alphabetButton = (Button) findViewById(R.id.alphabetButton);
 		contactsListView = (ListView) findViewById(R.id.contacts_list_view);
 	    content_layout = (RelativeLayout) findViewById(R.id.content_layout);
-
-//		composerButtonsWrapper = (ViewGroup) findViewById(R.id.composer_buttons_wrapper);
-//		composerButtonsShowHideButton = findViewById(R.id.composer_buttons_show_hide_button);
-//		composerButtonsShowHideButtonIcon = findViewById(R.id.composer_buttons_show_hide_button_icon);
-	
-		
+	    
 		rotateStoryAddButtonIn = AnimationUtils.loadAnimation(this,
 				R.anim.rotate_story_add_button_in);
 		rotateStoryAddButtonOut = AnimationUtils.loadAnimation(this,
@@ -170,7 +158,6 @@ public class MainActivity extends Activity {
 
 	private void setItemClick() {
 		// TODO Auto-generated method stub
-		Log.d("getView","setItemClick--------");
 		contactsListView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
@@ -181,43 +168,16 @@ public class MainActivity extends Activity {
 				composerButtonsWrapper =(ViewGroup) arg1.findViewById(R.id.composer_buttons_wrapper);
 				composerButtonsShowHideButtonIcon= (ImageView) arg1.findViewById(R.id.composer_buttons_show_hide_button_icon);
 				RelativeLayout composer_buttons_show_hide_button_Layout = (RelativeLayout) arg1.findViewById(R.id.composer_buttons_show_hide_button);
-//				MarginLayoutParams params = (MarginLayoutParams) titleLayout.getLayoutParams();
-//				params.topMargin = 0;
-//				titleLayout.setLayoutParams(params);
-				LayoutParams params = (LayoutParams) arg1.findViewById(R.id.item_layout).getLayoutParams();
 				
-				//分配弹出菜单图标的宽度
 				int totle_width=arg1.getWidth();
-				InOutImageButton composer_button_photo = (InOutImageButton) arg1.findViewById(R.id.composer_button_photo);
-				MarginLayoutParams photo_width = (MarginLayoutParams) composer_button_photo.getLayoutParams();
-				photo_width.width=photo_width.height=totle_width/8;
-				
-				InOutImageButton composer_button_music = (InOutImageButton) arg1.findViewById(R.id.composer_button_music);
-				MarginLayoutParams music_width = (MarginLayoutParams) composer_button_music.getLayoutParams();
-				music_width.width=music_width.height=totle_width/8;
-				
-				InOutImageButton composer_button_people = (InOutImageButton) arg1.findViewById(R.id.composer_button_people);
-				MarginLayoutParams people_width = (MarginLayoutParams) composer_button_people.getLayoutParams();
-				people_width.width=people_width.height=totle_width/8;
-				
-				InOutImageButton composer_button_place = (InOutImageButton) arg1.findViewById(R.id.composer_button_place);
-				MarginLayoutParams place_width = (MarginLayoutParams) composer_button_place.getLayoutParams();
-				place_width.width=place_width.height=totle_width/8;
-				
-				InOutImageButton composer_button_sleep = (InOutImageButton) arg1.findViewById(R.id.composer_button_sleep);
-				MarginLayoutParams sleep_width = (MarginLayoutParams) composer_button_sleep.getLayoutParams();
-				sleep_width.width=sleep_width.height=totle_width/8;
-				
-				InOutImageButton composer_button_thought = (InOutImageButton) arg1.findViewById(R.id.composer_button_thought);
-				MarginLayoutParams thought_width = (MarginLayoutParams) composer_button_thought.getLayoutParams();
-				thought_width.width=thought_width.height=totle_width/8;
-				
-				arg1.findViewById(R.id.composer_button_photo).setLayoutParams(photo_width);
-				arg1.findViewById(R.id.composer_button_music).setLayoutParams(music_width);
-				arg1.findViewById(R.id.composer_button_people).setLayoutParams(people_width);
-				arg1.findViewById(R.id.composer_button_place).setLayoutParams(place_width);
-				arg1.findViewById(R.id.composer_button_sleep).setLayoutParams(sleep_width);
-				arg1.findViewById(R.id.composer_button_thought).setLayoutParams(thought_width);
+				int popbtcount = composerButtonsWrapper.getChildCount();
+				for (int i = 0; i<popbtcount;i++){
+					View v = composerButtonsWrapper.getChildAt(i);
+					MarginLayoutParams popbt = (MarginLayoutParams) v.getLayoutParams();
+					popbt.width=popbt.height=totle_width/7;
+					v.setLayoutParams(popbt);
+				}
+				LayoutParams params = (LayoutParams) arg1.findViewById(R.id.item_layout).getLayoutParams();
 				if (!areButtonsShowing) {
 					params.height=500;
 					arg1.findViewById(R.id.item_layout).setLayoutParams(params);
@@ -320,7 +280,6 @@ public class MainActivity extends Activity {
 	}
 	
 	private void setAlpabetListener(){
-		Log.d("getView","MotionEvent.ACTION_DOWN----");
 	    alphabetButton.setOnTouchListener(new OnTouchListener() {  
 	        @Override  
 	        public boolean onTouch(View v, MotionEvent event) {  
