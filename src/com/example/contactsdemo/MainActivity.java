@@ -11,6 +11,7 @@ import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
@@ -23,11 +24,13 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AlphabetIndexer;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
@@ -41,10 +44,6 @@ public class MainActivity extends Activity {
      */  
     private RelativeLayout sectionToastLayout; 
     
-    /**
-     *  侧边监听
-     */
-    private RelativeLayout content_layout;
 	/**
 	 * 分组上显示的字母
 	 */
@@ -96,13 +95,13 @@ public class MainActivity extends Activity {
 	private int lastFirstVisibleItem = -1;
 	
 	
-	private boolean		areButtonsShowing = false; 
 	private ViewGroup	composerButtonsWrapper;
 	private ImageView		composerButtonsShowHideButtonIcon;
-	
+	private RelativeLayout  composer_buttons_show_hide_button_Layout;
 	private Animation	rotateStoryAddButtonIn;
 	private Animation	rotateStoryAddButtonOut;
-	
+	private LayoutParams item_root_layout_params;
+	private View item_root_layout;
 	public static String TAG="xiangkang";
 
 	@Override
@@ -117,7 +116,7 @@ public class MainActivity extends Activity {
 		sectionToastText = (TextView)findViewById(R.id.section_toast_text);
 		alphabetButton = (Button) findViewById(R.id.alphabetButton);
 		contactsListView = (ListView) findViewById(R.id.contacts_list_view);
-	    content_layout = (RelativeLayout) findViewById(R.id.content_layout);
+
 	    
 		rotateStoryAddButtonIn = AnimationUtils.loadAnimation(this,
 				R.anim.rotate_story_add_button_in);
@@ -162,48 +161,60 @@ public class MainActivity extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 					long arg3) {
-				Log.d("onItemClick","arg1="+arg1);
-				Log.d("onItemClick","arg2="+arg2);
-				Log.d("onItemClick","arg3="+arg3);
 				composerButtonsWrapper =(ViewGroup) arg1.findViewById(R.id.composer_buttons_wrapper);
 				composerButtonsShowHideButtonIcon= (ImageView) arg1.findViewById(R.id.composer_buttons_show_hide_button_icon);
-				RelativeLayout composer_buttons_show_hide_button_Layout = (RelativeLayout) arg1.findViewById(R.id.composer_buttons_show_hide_button);
+			    composer_buttons_show_hide_button_Layout = (RelativeLayout) arg1.findViewById(R.id.composer_buttons_show_hide_button);
 				
 				int totle_width=arg1.getWidth();
 				int popbtcount = composerButtonsWrapper.getChildCount();
 				for (int i = 0; i<popbtcount;i++){
-					View v = composerButtonsWrapper.getChildAt(i);
+					ImageButton v = (ImageButton) composerButtonsWrapper.getChildAt(i);
 					MarginLayoutParams popbt = (MarginLayoutParams) v.getLayoutParams();
 					popbt.width=popbt.height=totle_width/7;
 					v.setLayoutParams(popbt);
-				}
-				LayoutParams params = (LayoutParams) arg1.findViewById(R.id.item_layout).getLayoutParams();
-				if (!areButtonsShowing) {
-					params.height=500;
-					arg1.findViewById(R.id.item_layout).setLayoutParams(params);
-					Log.d("onItemClick","composer_buttons_show_hide_button_Layout="+composer_buttons_show_hide_button_Layout);
-					composer_buttons_show_hide_button_Layout.setVisibility(View.VISIBLE);
-					composer_buttons_show_hide_button_Layout.getBackground().setAlpha(250);
-					composerButtonsShowHideButtonIcon.setVisibility(View.VISIBLE);
-					ComposerButtonAnimation.startAnimations(
-							composerButtonsWrapper, InOutAnimation.Direction.IN);
-					composerButtonsShowHideButtonIcon
-							.startAnimation(rotateStoryAddButtonIn);
-				} else {
-					params.height=LayoutParams.MATCH_PARENT;
-					arg1.findViewById(R.id.item_layout).setLayoutParams(params);
-					ComposerButtonAnimation.startAnimations(
-							composerButtonsWrapper, InOutAnimation.Direction.OUT);
-					composerButtonsShowHideButtonIcon
-							.startAnimation(rotateStoryAddButtonOut);
-					Log.d("onItemClick","composer_buttons_show_hide_button_Layout="+composer_buttons_show_hide_button_Layout);
+					v.setOnClickListener(new OnClickListener(){
 
-					composer_buttons_show_hide_button_Layout.getBackground().setAlpha(0);
-					composer_buttons_show_hide_button_Layout.setVisibility(View.GONE);
-					composerButtonsShowHideButtonIcon.setVisibility(View.GONE);
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							Toast.makeText(getApplicationContext(), "composerButtonsWrapper="+v.getId(), Toast.LENGTH_SHORT).show();
+						}
+						
+					});
 				}
-				areButtonsShowing = !areButtonsShowing;
+				item_root_layout = arg1.findViewById(R.id.item_layout);
+				item_root_layout_params = (LayoutParams) item_root_layout.getLayoutParams();
+				item_root_layout_params.height=500;
+				item_root_layout.setLayoutParams(item_root_layout_params);
+				composer_buttons_show_hide_button_Layout.setVisibility(View.VISIBLE);
+				composer_buttons_show_hide_button_Layout.getBackground().setAlpha(250);
+				composerButtonsShowHideButtonIcon.setVisibility(View.VISIBLE);
+				ComposerButtonAnimation.startAnimations(
+						composerButtonsWrapper, InOutAnimation.Direction.IN);
+				composerButtonsShowHideButtonIcon
+						.startAnimation(rotateStoryAddButtonIn);
 				
+				composer_buttons_show_hide_button_Layout.setFocusable(true);
+				composer_buttons_show_hide_button_Layout.setOnClickListener(new OnClickListener(){
+					@Override
+					public void onClick(View v) {
+						Toast.makeText(getApplicationContext(), "composer_buttons_show_hide_button_Layout---", Toast.LENGTH_SHORT).show();
+						Log.d("onItemClick","colse pop-windows-----");
+						composer_buttons_show_hide_button_Layout.setFocusable(false);
+						ComposerButtonAnimation.startAnimations(
+								composerButtonsWrapper, InOutAnimation.Direction.OUT);
+						composerButtonsShowHideButtonIcon
+								.startAnimation(rotateStoryAddButtonOut);
+
+						composer_buttons_show_hide_button_Layout.getBackground().setAlpha(0);
+						composer_buttons_show_hide_button_Layout.setVisibility(View.GONE);
+						composerButtonsShowHideButtonIcon.setVisibility(View.GONE);
+						item_root_layout_params.height=LayoutParams.MATCH_PARENT;
+						item_root_layout.setLayoutParams(item_root_layout_params);
+					}
+					
+				});
+
 			}
 			
 		});
@@ -225,11 +236,6 @@ public class MainActivity extends Activity {
 					int totalItemCount) {
 				int section = indexer.getSectionForPosition(firstVisibleItem);
 				int nextSecPosition = indexer.getPositionForSection(section + 1);
-				Log.d("onScroll","section="+section);
-				Log.d("onScroll","nextSecPosition="+nextSecPosition);
-				Log.d("onScroll","firstVisibleItem="+firstVisibleItem);
-				Log.d("onScroll","visibleItemCount="+visibleItemCount);
-				Log.d("onScroll","totalItemCount="+totalItemCount);
 				if (firstVisibleItem != lastFirstVisibleItem) {
 					MarginLayoutParams params = (MarginLayoutParams) titleLayout.getLayoutParams();
 					params.topMargin = 0;
