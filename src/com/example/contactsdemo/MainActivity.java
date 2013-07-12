@@ -18,6 +18,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.OvershootInterpolator;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
@@ -102,6 +103,7 @@ public class MainActivity extends Activity {
 	private Animation	rotateStoryAddButtonOut;
 	private LayoutParams item_root_layout_params;
 	private View item_root_layout;
+	private View		composerButtonsShowHideButton;
 	public static String TAG="xiangkang";
 
 	@Override
@@ -116,7 +118,7 @@ public class MainActivity extends Activity {
 		sectionToastText = (TextView)findViewById(R.id.section_toast_text);
 		alphabetButton = (Button) findViewById(R.id.alphabetButton);
 		contactsListView = (ListView) findViewById(R.id.contacts_list_view);
-
+		composerButtonsShowHideButton = findViewById(R.id.composer_buttons_show_hide_button);
 	    
 		rotateStoryAddButtonIn = AnimationUtils.loadAnimation(this,
 				R.anim.rotate_story_add_button_in);
@@ -173,12 +175,14 @@ public class MainActivity extends Activity {
 					popbt.width=popbt.height=totle_width/7;
 					v.setLayoutParams(popbt);
 					v.setOnClickListener(new OnClickListener(){
-
 						@Override
 						public void onClick(View v) {
-							// TODO Auto-generated method stub
+							// TODO Auto-generated method stub 
+							PopBtSpecialEffect(v);
 							Toast.makeText(getApplicationContext(), "composerButtonsWrapper="+v.getId(), Toast.LENGTH_SHORT).show();
 						}
+
+
 						
 					});
 				}
@@ -199,7 +203,6 @@ public class MainActivity extends Activity {
 					@Override
 					public void onClick(View v) {
 						Toast.makeText(getApplicationContext(), "composer_buttons_show_hide_button_Layout---", Toast.LENGTH_SHORT).show();
-						Log.d("onItemClick","colse pop-windows-----");
 						composer_buttons_show_hide_button_Layout.setFocusable(false);
 						ComposerButtonAnimation.startAnimations(
 								composerButtonsWrapper, InOutAnimation.Direction.OUT);
@@ -212,7 +215,6 @@ public class MainActivity extends Activity {
 						item_root_layout_params.height=LayoutParams.MATCH_PARENT;
 						item_root_layout.setLayoutParams(item_root_layout_params);
 					}
-					
 				});
 
 			}
@@ -227,7 +229,6 @@ public class MainActivity extends Activity {
 	private void setupContactsListView() {
 		Log.d("onScroll","setupContactsListView-----");
 		contactsListView.setAdapter(adapter);
-
 		contactsListView.setOnScrollListener(new OnScrollListener() {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 			}
@@ -278,7 +279,7 @@ public class MainActivity extends Activity {
 	 * @return 英文字母或者#
 	 */
 	private String getSortKey(String sortKeyString) {
-		String key = sortKeyString.substring(0, 1).toUpperCase();
+		String key = sortKeyString.substring(0, 1);
 		if (key.matches("[A-Z]")) {
 			return key;
 		}
@@ -323,6 +324,16 @@ public class MainActivity extends Activity {
 	        }  
 	    });
 	} 
+	
+
+	private void PopBtSpecialEffect(View v) {
+		// TODO Auto-generated method stub
+		Animation growIn = new ComposerButtonGrowAnimationIn(300);
+		growIn.setInterpolator(new OvershootInterpolator(2.0F));
+		v.startAnimation(growIn);
+	}
+	
+	
 	private void printCurosr(Cursor cursor){
 		int clumn=cursor.getColumnCount();
 		Log.d("cur","clumn="+clumn);
