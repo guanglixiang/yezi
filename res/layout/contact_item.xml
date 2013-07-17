@@ -46,14 +46,12 @@
 		    android:id="@+id/show_hide_button"
 		    android:layout_width="wrap_content"
 		    android:layout_height="wrap_content"
-		    android:layout_centerInParent="true">
+		    >
 
 		        <com.example.contactsdemo.view.InOutRelativeLayout
 		            android:id="@+id/composer_buttons_wrapper"
 		            android:layout_width="fill_parent"
 		            android:layout_height="fill_parent"
-  		 			android:layout_alignParentTop="true"
-		 			android:layout_centerHorizontal="true"
 		            android:clipChildren="false"
 		            android:clipToPadding="false"
 		            android:descendantFocusability="blocksDescendants" >
@@ -62,8 +60,6 @@
 		                android:id="@+id/composer_button_photo"
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
-		                android:layout_alignParentLeft="true"
-		                android:layout_centerVertical="true"
 		                android:background="@drawable/composer_camera"
 		                android:visibility="gone" />
 		
@@ -71,8 +67,6 @@
 		                android:id="@+id/composer_button_people"
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
-		                android:layout_centerVertical="true"
-		                android:layout_toRightOf="@id/composer_button_photo"
 		                android:background="@drawable/composer_with"
 		                android:visibility="gone" />
 		
@@ -80,8 +74,6 @@
 		                android:id="@+id/composer_button_place"
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
-           				android:layout_centerVertical="true"
-           				android:layout_toRightOf="@id/composer_button_people"
 		                android:background="@drawable/composer_place"
 		                android:visibility="gone" />
 		
@@ -89,8 +81,6 @@
 		                android:id="@+id/composer_button_music"
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
-		                android:layout_centerVertical="true"
-		                android:layout_toRightOf="@id/composer_button_place"
 		                android:background="@drawable/composer_music"
 		                android:visibility="gone" />
 		
@@ -98,8 +88,6 @@
 		                android:id="@+id/composer_button_thought"
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
-		                android:layout_centerVertical="true"
-		                android:layout_toRightOf="@id/composer_button_music"
 		                android:background="@drawable/composer_thought"
 		                android:visibility="gone" />
 		
@@ -107,8 +95,6 @@
 		                android:id="@+id/composer_button_sleep"
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
-		                android:layout_centerVertical="true"
-		                android:layout_toRightOf="@id/composer_button_thought"
 		                android:background="@drawable/composer_sleep"
 		                android:visibility="gone" />
 		        </com.example.contactsdemo.view.InOutRelativeLayout>
