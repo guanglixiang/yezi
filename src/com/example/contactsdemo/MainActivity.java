@@ -115,9 +115,9 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		DisplayMetrics metric = new DisplayMetrics();
-		getWindowManager().getDefaultDisplay().getMetrics(metric);
-		RootWidth = metric.widthPixels;
+//		DisplayMetrics metric = new DisplayMetrics();
+//		getWindowManager().getDefaultDisplay().getMetrics(metric);
+		//RootWidth = metric.widthPixels;
 		adapter = new ContactAdapter(this, R.layout.contact_item, contacts);
 		titleLayout = (LinearLayout) findViewById(R.id.title_layout);
 		sectionToastLayout = (RelativeLayout) findViewById(R.id.section_toast_layout);
@@ -202,77 +202,87 @@ public class MainActivity extends Activity {
 				show_hide_bt = arg1
 						.findViewById(R.id.composer_buttons_show_hide_button);
 				// 根据item位置设置弹出菜单的方向
-				if (arg1.getRootView().getHeight() / 2 > currentPosition) {
-					MarginLayoutParams image_layout = (MarginLayoutParams) image
+//				if (arg1.getRootView().getHeight() / 2 > currentPosition) {
+//					MarginLayoutParams image_layout = (MarginLayoutParams) image
+//							.getLayoutParams();
+//					image_layout.topMargin = 200;
+//					image.setLayoutParams(image_layout);
+//					android.widget.RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+//							LayoutParams.WRAP_CONTENT,
+//							LayoutParams.WRAP_CONTENT);
+//					params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+//					params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+//					show_hide_bt.setLayoutParams(params);
+//					for (int i = 0; i < popbtcount; i++) {
+//						ImageButton v = (ImageButton) composerButtonsWrapper
+//								.getChildAt(i);
+//						MarginLayoutParams popbt = (MarginLayoutParams) v
+//								.getLayoutParams();
+//						popbt.width = popbt.height = totle_width / 7;
+//						v.setLayoutParams(popbt);
+//						// 计算popbt的半圆形分布位置
+//						float pi = 3.14f;
+//						float rootwidth = v.getRootView().getWidth();
+//						float r = rootwidth / 2 - 40;
+//						float initangle = (pi / 6);
+//						float increase_angle = initangle + i
+//								* ((pi - 2 * initangle) / (popbtcount - 1));
+//						popbt.leftMargin = (int) (r - Math.cos(increase_angle) * r);
+//						popbt.topMargin = (int) ((1-Math.sin(increase_angle)) * r);
+//						Log.d("popbtcount","popbt.bottomMargin="+popbt.bottomMargin);
+//
+//						v.setOnClickListener(new OnClickListener() {
+//							@Override
+//							public void onClick(View v) {
+//								// TODO Auto-generated method stub
+//								PopBtSpecialEffect(v);
+//								Toast.makeText(getApplicationContext(),
+//										"composerButtonsWrapper=" + v.getId(),
+//										Toast.LENGTH_SHORT).show();
+//							}
+//						});
+//					}
+//
+//				}else{
+//				if (2*arg1.getRootView().getHeight() / 3 < currentPosition){
+//					//contactsListView.smoothScrollToPositionFromTop(10, 200, 3000);
+//				}
+				int section = indexer.getSectionForPosition(arg2);
+				Log.d("xiangkang","arg2="+arg2);
+				Log.d("xiangkang","indexer.getPositionForSection(section)="+indexer.getPositionForSection(section));
+				if (arg2 == indexer.getPositionForSection(section)) {
+					contactsListView.smoothScrollBy(arg1.getTop(), 500);
+				} else {
+					contactsListView.smoothScrollBy(arg1.getTop()-titleLayout.getHeight(), 500);
+				}
+				for (int i = 0; i < popbtcount; i++) {
+					ImageButton v = (ImageButton) composerButtonsWrapper
+							.getChildAt(i);
+					MarginLayoutParams popbt = (MarginLayoutParams) v
 							.getLayoutParams();
-					image_layout.topMargin = 200;
-					image.setLayoutParams(image_layout);
-					android.widget.RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-							LayoutParams.WRAP_CONTENT,
-							LayoutParams.WRAP_CONTENT);
-					params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-					params.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-					show_hide_bt.setLayoutParams(params);
-					for (int i = 0; i < popbtcount; i++) {
-						ImageButton v = (ImageButton) composerButtonsWrapper
-								.getChildAt(i);
-						MarginLayoutParams popbt = (MarginLayoutParams) v
-								.getLayoutParams();
-						popbt.width = popbt.height = totle_width / 7;
-						v.setLayoutParams(popbt);
-						// 计算popbt的半圆形分布位置
-						float pi = 3.14f;
-						float rootwidth = v.getRootView().getWidth();
-						float r = rootwidth / 2 - 40;
-						float initangle = (pi / 6);
-						float increase_angle = initangle + i
-								* ((pi - 2 * initangle) / (popbtcount - 1));
-						popbt.leftMargin = (int) (r - Math.cos(increase_angle) * r);
-						popbt.topMargin = (int) ((1-Math.sin(increase_angle)) * r);
-						Log.d("popbtcount","popbt.bottomMargin="+popbt.bottomMargin);
-
-						v.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								// TODO Auto-generated method stub
-								PopBtSpecialEffect(v);
-								Toast.makeText(getApplicationContext(),
-										"composerButtonsWrapper=" + v.getId(),
-										Toast.LENGTH_SHORT).show();
-							}
-						});
-					}
-
-				}else{
-					for (int i = 0; i < popbtcount; i++) {
-						ImageButton v = (ImageButton) composerButtonsWrapper
-								.getChildAt(i);
-						MarginLayoutParams popbt = (MarginLayoutParams) v
-								.getLayoutParams();
-						popbt.width = popbt.height = totle_width / 7;
-						v.setLayoutParams(popbt);
-						// 计算popbt的半圆形分布位置
-						float pi = 3.14f;
-						float rootwidth = v.getRootView().getWidth();
-						float r = rootwidth / 2 - 40;
-						float initangle = (pi / 6);
-						float increase_angle = initangle + i
-								* ((pi - 2 * initangle) / (popbtcount - 1));
-						popbt.leftMargin = (int) (r - Math.cos(increase_angle) * r);
-						popbt.topMargin = (int) (Math.sin(increase_angle) * r);
-						Log.d("popbtcount","popbt.bottomMargin="+popbt.bottomMargin);
-	
-						v.setOnClickListener(new OnClickListener() {
-							@Override
-							public void onClick(View v) {
-								// TODO Auto-generated method stub
-								PopBtSpecialEffect(v);
-								Toast.makeText(getApplicationContext(),
-										"composerButtonsWrapper=" + v.getId(),
-										Toast.LENGTH_SHORT).show();
-							}
-						});
-					}
+					popbt.width = popbt.height = totle_width / 7;
+					v.setLayoutParams(popbt);
+					// 计算popbt的半圆形分布位置
+					float pi = 3.14f;
+					float rootwidth = v.getRootView().getWidth();
+					float r = rootwidth / 2 - 40;
+					float initangle = (pi / 6);
+					float increase_angle = initangle + i
+							* ((pi - 2 * initangle) / (popbtcount - 1));
+					popbt.leftMargin = (int) (r - Math.cos(increase_angle) * r);
+					popbt.topMargin = (int) (Math.sin(increase_angle) * r);
+					Log.d("popbtcount","popbt.bottomMargin="+popbt.bottomMargin);
+					
+					v.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							// TODO Auto-generated method stub
+							PopBtSpecialEffect(v);
+							Toast.makeText(getApplicationContext(),
+									"composerButtonsWrapper=" + v.getId(),
+									Toast.LENGTH_SHORT).show();
+						}
+					});
 				}
 				ComposerButtonAnimation.startAnimations(composerButtonsWrapper,
 						InOutAnimation.Direction.IN);
@@ -285,16 +295,16 @@ public class MainActivity extends Activity {
 							@Override
 							public void onClick(View v) {
 								// 布局
-								MarginLayoutParams image_layout = (MarginLayoutParams) image
-										.getLayoutParams();
-								image_layout.topMargin = 1;
-								image.setLayoutParams(image_layout);
-								android.widget.RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-										LayoutParams.WRAP_CONTENT,
-										LayoutParams.WRAP_CONTENT);
-								params.addRule(RelativeLayout.CENTER_HORIZONTAL);
-								params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-								show_hide_bt.setLayoutParams(params);
+//								MarginLayoutParams image_layout = (MarginLayoutParams) image
+//										.getLayoutParams();
+//								image_layout.topMargin = 1;
+//								image.setLayoutParams(image_layout);
+//								android.widget.RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+//										LayoutParams.WRAP_CONTENT,
+//										LayoutParams.WRAP_CONTENT);
+//								params.addRule(RelativeLayout.CENTER_HORIZONTAL);
+//								params.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+//								show_hide_bt.setLayoutParams(params);
 
 								Toast.makeText(getApplicationContext(),
 										"composerButtonsShowHideButtonIcon---",
