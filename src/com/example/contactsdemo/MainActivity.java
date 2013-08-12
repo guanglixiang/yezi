@@ -3,14 +3,16 @@ package com.example.contactsdemo;
 import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
@@ -109,16 +111,19 @@ public class MainActivity extends Activity {
 	private ImageView image;
 	private View show_hide_bt;
 	private int RootWidth;
+	private LayoutInflater mInflater;
+	private View mRefreshView;
+	private TextView elasticTextv;
+	private int mRefreshViewHeight;
+	private int mRefreshOriginalTopPadding;
 	public static String TAG = "xiangkang";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-//		DisplayMetrics metric = new DisplayMetrics();
-//		getWindowManager().getDefaultDisplay().getMetrics(metric);
-		//RootWidth = metric.widthPixels;
 		adapter = new ContactAdapter(this, R.layout.contact_item, contacts);
+
 		titleLayout = (LinearLayout) findViewById(R.id.title_layout);
 		sectionToastLayout = (RelativeLayout) findViewById(R.id.section_toast_layout);
 		title = (TextView) findViewById(R.id.title);
@@ -171,9 +176,57 @@ public class MainActivity extends Activity {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				// TODO Auto-generated method stub
-				currentPosition = event.getRawY();
-				return false;
+//				currentPosition = event.getRawY();
+//				return false;
+		        switch (event.getAction()) {
+	            case MotionEvent.ACTION_UP:
+	            	resetHeaderPadding();
+//	                if (contactsListView.getFirstVisiblePosition() == 0) {
+//	                    if ((mRefreshView.getBottom() >= mRefreshViewHeight
+//	                            || mRefreshView.getTop() >= 0)
+//	                            && mRefreshState == RELEASE_TO_REFRESH) {
+//	                        // Initiate the refresh
+//	                        mRefreshState = REFRESHING;
+//	                        prepareForRefresh();
+//	                        onRefresh();
+//	                    } else if (mRefreshView.getBottom() < mRefreshViewHeight
+//	                            || mRefreshView.getTop() <= 0) {
+//	                        // Abort refresh and scroll down below the refresh view
+//	                        resetHeader();
+//	                        setSelection(1);
+//	                    }
+//	                }
+	                break;
+	            case MotionEvent.ACTION_DOWN:
+	                //mLastMotionY = y;
+	            	currentPosition = event.getRawY();
+	                break;
+	            case MotionEvent.ACTION_MOVE:
+	                applyHeaderPadding(event);
+	                break;
+		        }
+		        return false;
 			}
+		    private void applyHeaderPadding(MotionEvent ev) {
+		        // getHistorySize has been available since API 1
+		        int pointerCount = ev.getHistorySize();
+		        Log.d("xiangkang","ev.getHistorySize()="+ev.getHistorySize());
+		        for (int p = 0; p < pointerCount; p++) {
+		                int historicalY = (int) ev.getHistoricalY(p);
+		                Log.d("xiangkang","ev.getHistoricalY()="+ev.getHistoricalY(p));
+
+		                // Calculate the padding to apply, we divide by 1.7 to
+		                // simulate a more resistant effect during pull.
+		                int topPadding = (int) (((historicalY - currentPosition)
+		                        - mRefreshViewHeight) / 1.7);
+
+		                mRefreshView.setPadding(
+		                        mRefreshView.getPaddingLeft(),
+		                        topPadding,
+		                        mRefreshView.getPaddingRight(),
+		                        mRefreshView.getPaddingBottom());
+		            }
+		    }
 
 		});
 		contactsListView.setOnItemClickListener(new OnItemClickListener() {
@@ -328,13 +381,42 @@ public class MainActivity extends Activity {
 		});
 
 	}
+	
+    private void resetHeaderPadding() {
+        mRefreshView.setPadding(
+                mRefreshView.getPaddingLeft(),
+                mRefreshOriginalTopPadding,
+                mRefreshView.getPaddingRight(),
+                mRefreshView.getPaddingBottom());
+    }
 
 	/**
 	 * 为联系人ListView设置监听事件，根据当前的滑动状态来改变分组的显示位置，从而实现挤压动画的效果。
 	 */
 	private void setupContactsListView() {
-		Log.d("onScroll", "setupContactsListView-----");
-		contactsListView.setAdapter(adapter);
+//		mInflater = (LayoutInflater) this.getSystemService(
+//                Context.LAYOUT_INFLATER_SERVICE);
+//		mRefreshView = (RelativeLayout) mInflater.inflate(R.layout.pull_to_refresh_header, null,false);
+		//mRefreshView = (RelativeLayout) findViewById(R.id.pull_to_refresh_header);
+//		LayoutInflater inflater = getLayoutInflater();
+//		mRefreshView =  inflater.inflate(R.layout.pull_to_refresh_header,null);
+		mRefreshView=LayoutInflater.from(this).inflate(R.layout.pull_to_refresh_header, null);
+		elasticTextv = (TextView) mRefreshView.findViewById(R.id.refresh_header_text);
+		LayoutParams test = elasticTextv.getLayoutParams();
+		elasticTextv.setMinimumHeight(0);
+		mRefreshOriginalTopPadding = mRefreshView.getPaddingTop();
+		Log.d("xiangkang","setupContactsListView test="+test);
+		Log.d("xiangkang","setupContactsListView mRefreshView="+mRefreshView);
+		contactsListView.addHeaderView(mRefreshView);
+		measureView(elasticTextv);
+		mRefreshViewHeight = elasticTextv.getMeasuredHeight();
+//		int mRefreshViewHeight = mRefreshView.getMeasuredHeight();
+//        mRefreshView.setPadding(
+//                mRefreshView.getPaddingLeft(),
+//                mRefreshViewHeight,
+//                mRefreshView.getPaddingRight(),
+//                mRefreshView.getPaddingBottom());
+        contactsListView.setAdapter(adapter);
 		contactsListView.setOnScrollListener(new OnScrollListener() {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 			}
@@ -380,6 +462,28 @@ public class MainActivity extends Activity {
 
 	}
 
+    private void measureView(View child) {
+        ViewGroup.LayoutParams p = child.getLayoutParams();
+        Log.d("xiangkang","p==="+p);
+        if (p == null) {
+            p = new ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+        }
+        Log.d("xiangkang","p===after if"+p);
+        int childWidthSpec = ViewGroup.getChildMeasureSpec(0,
+                0 + 0, p.width);
+        int lpHeight = p.height;
+        int childHeightSpec;
+        if (lpHeight > 0) {
+            childHeightSpec = MeasureSpec.makeMeasureSpec(lpHeight, MeasureSpec.EXACTLY);
+        } else {
+            childHeightSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
+        }
+        Log.d("xiangkang","childWidthSpec="+childWidthSpec);
+        Log.d("xiangkang","childHeightSpec="+childHeightSpec);
+        child.measure(childWidthSpec, childHeightSpec);
+    }
 	/**
 	 * 获取sort key的首个字符，如果是英文字母就直接返回，否则返回#。
 	 * 
@@ -388,7 +492,7 @@ public class MainActivity extends Activity {
 	 * @return 英文字母或者#
 	 */
 	private String getSortKey(String sortKeyString) {
-		String key = sortKeyString.substring(0, 1);
+		String key = sortKeyString.substring(0, 1).toUpperCase();
 		if (key.matches("[A-Z]")) {
 			return key;
 		}

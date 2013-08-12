@@ -12,9 +12,9 @@ import com.example.contactsdemo.view.InOutImageButton;
 
 public class ComposerButtonAnimation extends InOutAnimation {
 
-	public static final int		DURATION	= 100;
-	private static final int	xOffset		= 200;
-	private static final int	yOffset		= 10;
+	public static final int DURATION = 1000;
+	private static final int xOffset = 200;
+	private static final int yOffset = 10;
 
 	public ComposerButtonAnimation(Direction direction, long l, View view) {
 		super(direction, l, new View[] { view });
@@ -39,7 +39,8 @@ public class ComposerButtonAnimation extends InOutAnimation {
 						.getChildAt(i);
 				ComposerButtonAnimation animation = new ComposerButtonAnimation(
 						InOutAnimation.Direction.IN, DURATION, inoutimagebutton);
-				animation.setStartOffset((i * 500)/ (-1 + viewgroup.getChildCount()));
+				// animation.setStartOffset((i * 500)/ (-1 +
+				// viewgroup.getChildCount()));
 				animation.setInterpolator(new OvershootInterpolator(2F));
 				inoutimagebutton.startAnimation(animation);
 			}
@@ -54,7 +55,8 @@ public class ComposerButtonAnimation extends InOutAnimation {
 				ComposerButtonAnimation animation = new ComposerButtonAnimation(
 						InOutAnimation.Direction.OUT, DURATION,
 						inoutimagebutton);
-				animation.setStartOffset((i * 50)/ (-1 + viewgroup.getChildCount()));
+				 animation.setStartOffset((i * 50)/ (-1 +
+				 viewgroup.getChildCount()));
 				animation.setInterpolator(new AnticipateInterpolator(2F));
 				inoutimagebutton.startAnimation(animation);
 			}
@@ -63,19 +65,19 @@ public class ComposerButtonAnimation extends InOutAnimation {
 
 	@Override
 	protected void addInAnimation(View[] aview) {
-		Log.d("onScroll","addInAnimation-----");
+		Log.d("onScroll", "addInAnimation-----");
 		MarginLayoutParams mlp = (MarginLayoutParams) aview[0]
 				.getLayoutParams();
-		Log.d("OnScroll","mlp="+mlp);
-		addAnimation(new TranslateAnimation(xOffset-mlp.leftMargin, 0F,
-				-mlp.topMargin+yOffset, 0f));
+		Log.d("OnScroll", "mlp=" + mlp);
+		addAnimation(new TranslateAnimation(xOffset - mlp.leftMargin, 0F,
+				-mlp.topMargin + yOffset, 0f));
 	}
 
 	@Override
 	protected void addOutAnimation(View[] aview) {
 		MarginLayoutParams mlp = (MarginLayoutParams) aview[0]
 				.getLayoutParams();
-		addAnimation(new TranslateAnimation(0F, xOffset -mlp.leftMargin, 0F,
+		addAnimation(new TranslateAnimation(0F, xOffset - mlp.leftMargin, 0F,
 				yOffset - mlp.topMargin));
 	}
 }
