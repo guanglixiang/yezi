@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.SectionIndexer;
 import android.widget.TextView;
 
@@ -34,32 +33,38 @@ public class ContactAdapter extends ArrayAdapter<Contact> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Log.d("getView","position="+position);
 		Contact contact = getItem(position);
-		LinearLayout layout = null;
-		if (convertView == null) {
-			layout = (LinearLayout) LayoutInflater.from(getContext()).inflate(resource, null);
+		Holder holder;
+		if (convertView == null) {		
+			Log.d("getView","convertView is null,position="+position);
+			convertView = (LinearLayout) LayoutInflater.from(getContext()).inflate(resource, null);
+			holder = new Holder();
+			holder.name = (TextView) convertView.findViewById(R.id.name);
+			holder.sortKey = (TextView) convertView.findViewById(R.id.sort_key);
+			holder.sortKeyLayout = (LinearLayout) convertView.findViewById(R.id.sort_key_layout);
+			convertView.setTag(holder);
+
 		} else {
-			layout = (LinearLayout) convertView;
+			Log.d("getView","convertView is not null,position="+position);
+			holder = (Holder) convertView.getTag();
 		}
-		layout = (LinearLayout) LayoutInflater.from(getContext()).inflate(resource, null);
-		
-		TextView name = (TextView) layout.findViewById(R.id.name);
-		TextView sortKey = (TextView) layout.findViewById(R.id.sort_key);
-		name.setText(contact.getName());
-		LinearLayout sortKeyLayout = (LinearLayout) layout.findViewById(R.id.sort_key_layout);
+		holder.name.setText(contact.getName());
 		int section = mIndexer.getSectionForPosition(position);
+		holder.sortKey.setText(contact.getSortKey());//这里写上的目的是在点击事件里有可能会在将sortkey可见，防止那时sortkey出现混乱
 		if (position == mIndexer.getPositionForSection(section)) {
-			sortKey.setText(contact.getSortKey());
-			sortKeyLayout.setVisibility(View.VISIBLE);
+			holder.sortKeyLayout.setVisibility(View.VISIBLE);
 		} else {
-			sortKeyLayout.setVisibility(View.GONE);
+			holder.sortKeyLayout.setVisibility(View.GONE);
 		}
-		RelativeLayout composer_buttons_show_hide_button_Layout = (RelativeLayout) layout.findViewById(R.id.composer_buttons_show_hide_button);
-		composer_buttons_show_hide_button_Layout.getBackground().setAlpha(0);
-		return layout;
+		return convertView;
 	}
 
+	
+	private class Holder{
+		TextView name;
+		TextView sortKey;
+		LinearLayout sortKeyLayout;
+	}
 	/**
 	 * 给当前适配器传入一个分组工具。
 	 * 
