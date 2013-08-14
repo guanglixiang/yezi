@@ -105,16 +105,15 @@
 		            android:layout_height="wrap_content"
 		 			android:layout_alignParentTop="true"
 		 			android:layout_centerHorizontal="true"
-		 			android:visibility="gone"
-		            android:background="@drawable/composer_button_center"
 		            >
 		
 		            <ImageView
 		                android:id="@+id/composer_buttons_show_hide_button_icon"
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
-						android:layout_centerInParent="true"
 		                android:visibility="gone"
+		                android:padding="15dip"
+	                 	android:background="@drawable/composer_button_center"
 		                android:src="@drawable/composer_icn_plus"
 		                />
 		        </com.example.contactsdemo.view.InOutRelativeLayout>

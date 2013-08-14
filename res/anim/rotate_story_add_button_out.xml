@@ -3,18 +3,18 @@
         android:interpolator="@android:anim/accelerate_interpolator"  
         android:shareInterpolator="true"  
         >  
-        <alpha  
-            android:fromAlpha="1.0"  
-            android:toAlpha="0.0"  
-            android:startOffset="100"  
-            android:duration="200"  
-                />  
         <rotate  
             android:fromDegrees="0"  
             android:toDegrees="50"  
             android:pivotX="50%"  
             android:pivotY="50%"  
-            android:duration="150"  
+            android:duration="1500"  
         />  
+        <alpha  
+            android:fromAlpha="1.0"  
+            android:toAlpha="0.0"  
+            android:startOffset="800"  
+            android:duration="1500"  
+                />  
       
     </set>  

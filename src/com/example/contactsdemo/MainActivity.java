@@ -176,7 +176,7 @@ public class MainActivity extends Activity {
 //				return false;
 		        switch (event.getAction()) {
 	            case MotionEvent.ACTION_UP:
-	            	resetHeaderPadding(move_up);
+	            	resetAddViewPadding(move_up);
 	                break;
 	            case MotionEvent.ACTION_DOWN:
 	                //mLastMotionY = y;
@@ -205,9 +205,9 @@ public class MainActivity extends Activity {
 			                // Calculate the padding to apply, we divide by 1.7 to
 			                // simulate a more resistant effect during pull.
 			                int topPadding = (int) (((historicalY - currentPosition)
-			                        - mRefreshViewHeight) / 1.7);
+			                        - mRefreshViewHeight) / 2.7);
 			                int bottomPadding = (int) (((currentPosition - historicalY)
-			                        - mRefreshViewHeight) / 1.7);
+			                        - mRefreshViewHeight) / 2.7);
 			                if(move_up){
 			                	mRefreshView.setPadding(
 			                			mRefreshView.getPaddingLeft(),
@@ -258,7 +258,7 @@ public class MainActivity extends Activity {
 					contactsListView.smoothScrollBy(arg1.getTop(), 500);
 				} else {
 					//titleLayout.setVisibility(View.GONE);
-					contactsListView.smoothScrollBy(arg1.getTop()-titleLayout.getHeight(), 500);
+					contactsListView.smoothScrollBy(arg1.getTop()-27, 500);
 				}
 				for (int i = 0; i < popbtcount; i++) {
 					ImageButton v = (ImageButton) composerButtonsWrapper
@@ -335,7 +335,7 @@ public class MainActivity extends Activity {
 
 	}
 	
-    private void resetHeaderPadding(boolean move) {
+    private void resetAddViewPadding(boolean move) {
     	Log.d("zhengye","move="+move);
     	if(move){
     		elasticTextv.setVisibility(View.GONE);
